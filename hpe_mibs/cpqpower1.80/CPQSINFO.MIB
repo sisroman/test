@@ -1,0 +1,122 @@
+-- ****************************************************************************
+-- :CPQ,DEV:
+--
+-- * SYSTEM INFORMATION SNMP MIB DEFINITIONS
+--
+-- * $Date: 2008/05/12 12:42:06Z $
+-- * $Revision: 1.38 $
+--
+-- Hewlett-Packard Company
+-- Confidential - Need To Know
+-- ****************************************************************************
+-- :CPQ,ENDDEV:
+--
+--                           System Information
+--         Management Information Base for SNMP Network Management
+--
+--
+--      Copyright 1992,2008 Hewlett-Packard Development Company, L.P.
+--
+--      Hewlett-Packard Company shall not be liable for technical or
+--      editorial errors or omissions contained herein. The information in
+--      this document is provided "as is" without warranty of any kind and
+--      is subject to change without notice. The warranties for HP products
+--      are set forth in the express limited warranty statements
+--      accompanying such products. Nothing herein should be construed as
+--      constituting an additional warranty.
+--
+--      Confidential computer software. Valid license from HP required for
+--      possession, use or copying. Consistent with FAR 12.211 and 12.212,
+--      Commercial Computer Software, Computer Software Documentation, and
+--      Technical Data for Commercial Items are licensed to the U.S.
+--      Government under vendor's standard commercial license.
+--
+--      Refer to the READMIB.RDM file for more information about the
+--      organization of the information in the Compaq Enterprise.
+--
+--      The Compaq Enterprise number is 232.
+--      The ASN.1 prefix to, and including the Compaq Enterprise is:
+--           1.3.6.1.4.1.232
+--
+-- ****************************************************************************
+
+CPQSINFO-MIB DEFINITIONS ::= BEGIN
+
+    IMPORTS
+        compaq                  FROM CPQHOST-MIB
+        DisplayString           FROM RFC1213-MIB
+        OBJECT-TYPE             FROM RFC-1212
+        sysName                 FROM RFC1213-MIB
+        TRAP-TYPE               FROM RFC-1215;
+
+
+--  compaq              OBJECT IDENTIFIER ::= { enterprises 232 }
+    cpqSystemInfo       OBJECT IDENTIFIER ::= { compaq 2 }
+    cpqSiMibRev         OBJECT IDENTIFIER ::= { cpqSystemInfo 1 }
+    cpqSiComponent      OBJECT IDENTIFIER ::= { cpqSystemInfo 2 }
+
+    cpqSiAsset          OBJECT IDENTIFIER ::= { cpqSiComponent 2 }
+    cpqSiSystemBoard    OBJECT IDENTIFIER ::= { cpqSiComponent 4 }
+
+-- ****************************************************************************
+--   System Information Asset Group
+--   ==============================
+--
+-- The compaq enterprise               (1.3.6.1.4.1.232)
+--      cpqSystemInfo Group            (1.3.6.1.4.1.232.2)
+--       cpqSiComponent Group          (1.3.6.1.4.1.232.2.2)
+--        cpqSiAsset Group             (1.3.6.1.4.1.232.2.2.2)
+--
+--  The cpqSiAsset group contains the serial numbers of any hardware
+--  that supports asset management.
+--
+--  Implementation of the cpqSiAsset group is mandatory for all Insight
+--  Agents that support the System Information MIB.
+--
+-- ****************************************************************************
+
+    cpqSiSysSerialNum OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..255))
+        ACCESS  read-only
+        STATUS  mandatory
+        DESCRIPTION
+            "The serial number of the physical system unit.
+
+            The string will be empty if the system does not report the
+            serial number function."
+        ::= { cpqSiAsset 1 }
+        
+-- ****************************************************************************
+--   System Information System Board Group
+--   =====================================
+--
+-- The compaq enterprise               (1.3.6.1.4.1.232)
+--      cpqSystemInfo Group            (1.3.6.1.4.1.232.2)
+--       cpqSiComponent Group          (1.3.6.1.4.1.232.2.2)
+--        cpqSiSystemBoard Group       (1.3.6.1.4.1.232.2.2.4)
+--
+--  The cpqSiSystemBoard group describe features of your computer
+--  system board.
+--
+--  Implementation of the cpqSiSystemBoard group is mandatory for all agents
+--  that support the System Information MIB.
+--
+-- ****************************************************************************
+
+    cpqSiProductName OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..255))
+        ACCESS  read-only
+        STATUS  mandatory
+        DESCRIPTION
+            "The machine product name.
+
+            The name of the machine used in this system."
+-- :CPQ,DEV:
+--      If the machine name cannot be determined, this item
+--      should return the following generic string:
+--             Personal Computer
+--
+-- :CPQ,ENDDEV:
+        ::= { cpqSiSystemBoard 2 }
+                
+END
